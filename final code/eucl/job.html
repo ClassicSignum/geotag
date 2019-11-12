@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"> -->
+    <link rel="stylesheet" href="job.css">
+    <title>Job description</title>
+</head>
+
+<body>
+
+    <iframe scrolling="yes" width="960" height="315"
+        src="https://www.careerjet.com.bd/commercial-jobs/dhaka-122414.html">
+    </iframe>
+
+    <input type="submit" id="locationBtn" value="Location">
+    <input type="submit" id="showLocationBtn" value="show location">
+    <input type="submit" id="jobsBtn" value="calculate distance">
+    <input type="submit" id="jobsShowBtn" value="show jobs">
+
+
+    <select name="" id="select-job-cata">
+        <option value="https://www.careerjet.com.bd/jobs-engineering.html">Engineering</option>
+        <option value="https://www.careerjet.com.bd/jobs-education-training.html">Education - Training</option>
+        <option value="https://www.careerjet.com.bd/jobs-customer-service-call-centers.html">Customer Service - Call Centers</option>
+        <option value="https://www.careerjet.com.bd/jobs-arts-design-entertainment.html">arts design entertainmen</option>
+        <option value="https://www.careerjet.com.bd/jobs-accounting-auditing.html">Accounting - Auditing</option>
+    </select>
+
+    <input type="submit" name="" id="submit catagory" onclick="submitCatagory()">
+    
+
+
+    <div class="location">
+        <p class="locp">My location: </p>
+    </div>
+
+    <div class="items">
+        <p>All job location:</p>
+        <p>Sorted job location:</p>
+    </div>
+    
+
+
+
+    <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
+    <script src="js/ygrab.js"></script>
+
+
+    <script>
+
+
+
+var locbtn = document.getElementById('locationBtn');
+        var myloc = "wefewf";
+        var mya, myb;
+        var jobLocations = [];
+        locbtn.addEventListener('click', function () {
+
+
+            function getLocation() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function (position) {
+
+                        mya = position.coords.latitude;
+                        myb = position.coords.longitude;
+
+
+
+
+                        console.log("Latitude: " + position.coords.latitude +
+                            "<br>Longitude: " + position.coords.longitude);
+
+                    });
+                }
+            }
+
+            getLocation();
+
+            // openCages(mya,myb);
+
+
+        });
+
+
+        //////////////////***************  
+
+        var links;
+        function submitCatagory(){
+            var catValue= document.getElementById('select-job-cata').value;
+            console.log(catValue);
+            links=catValue;
+            jobLocations = [];
+            console.log("job location length : "+jobLocations.length);
+
+            var ma = 0, mb = 0;
+        var ta = 0, tb = 0;
+        var str = '<ul  style=position: absolute; bottom: 0px>';
+        $(function () {
+
+
+            var mx1 = 0, my1 = 0;
+            var data2; 
+            var data = [
+                {
+                    // url: 'https://www.careerjet.com.bd/commercial-jobs/dhaka-122414.html', // url string rquired
+                    url: links, // url string rquired
+                    selector: 'div.job', // selector string rquired
+                    loop: true, // each boolean rquired
+                    
+                    result: [
+                        {
+                            name: 'title', // key string rquired
+                            find: 'div.locations_compact', // selector child string rquired
+                            grab: {
+                                by: 'text', // attribut string rquired
+                                value: '' // attribut value string optional
+                            }
+                        },
+                        {
+                            name: 'title2', // key string rquired
+                            find: 'a.title-company', // selector child string rquired
+                            grab: {
+                                by: 'attr', // attribut string rquired
+                                value: 'href' // attribut value string optional
+                            }
+                        }
+                        // ---- new selector ---- //
+                    ]
+                },
+                // ---- new website url ---- //
+            ];
+
+            ygrab(data, function (result) {
+                var arr = (JSON.stringify(result, null, 2));
+                // var arr2 = (JSON.stringify(result2, null, 2));
+
+                ///////////
+
+                ///////////
+                
+                for (var i = 0; i < result.length; i++) {
+
+                        console.log(result.title);
+                    if (result[i].title.includes('Tk')) {
+                        var s = result[i].title.split('Tk');
+                        var lin = " https://www.careerjet.com.bd"+result[i].title2;
+
+                        var locs = s[0];
+                    }
+                    else {
+
+                        var lin = " https://www.careerjet.com.bd"+result[i].title2;
+                         locs = result[i].title;
+                    }
+
+                    // console.log("location by scrap: " + locs);
+                    // openCages(locs);
+                    locslin = locs+"~"+lin;
+                    jobLocations.push(locslin);
+                    
+                    // console.log("line 158 : "+locs);
+                    str += '<li><a href="'+lin+'">' + locs + '</a></li>';
+
+                }
+                str += '</ul>';
+
+                $('.items').append(str);
+                jobLocations.forEach(element => {
+                    console.log(element+" scrap");
+                });
+
+
+            });
+        });
+
+            //////////******************
+        }
+
+        
+
+        var showloc = document.querySelector('#showLocationBtn');
+        showloc.addEventListener('click', function () {
+            openCages(mya, myb);
+        });
+
+
+        // var ma = 0, mb = 0;
+        // var ta = 0, tb = 0;
+        // var str = '<ul  style=position: absolute; bottom: 0px>';
+        // $(function () {
+
+
+        //     var mx1 = 0, my1 = 0;
+        //     var data2; 
+        //     var data = [
+        //         {
+        //             // url: 'https://www.careerjet.com.bd/commercial-jobs/dhaka-122414.html', // url string rquired
+        //             url: links, // url string rquired
+        //             selector: 'div.job', // selector string rquired
+        //             loop: true, // each boolean rquired
+                    
+        //             result: [
+        //                 {
+        //                     name: 'title', // key string rquired
+        //                     find: 'div.locations_compact', // selector child string rquired
+        //                     grab: {
+        //                         by: 'text', // attribut string rquired
+        //                         value: '' // attribut value string optional
+        //                     }
+        //                 },
+        //                 {
+        //                     name: 'title2', // key string rquired
+        //                     find: 'a.title-company', // selector child string rquired
+        //                     grab: {
+        //                         by: 'attr', // attribut string rquired
+        //                         value: 'href' // attribut value string optional
+        //                     }
+        //                 }
+        //                 // ---- new selector ---- //
+        //             ]
+        //         },
+        //         // ---- new website url ---- //
+        //     ];
+
+        //     ygrab(data, function (result) {
+        //         var arr = (JSON.stringify(result, null, 2));
+        //         // var arr2 = (JSON.stringify(result2, null, 2));
+
+        //         ///////////
+
+        //         ///////////
+                
+        //         for (var i = 0; i < result.length; i++) {
+
+        //                 console.log(result.title);
+        //             if (result[i].title.includes('Tk')) {
+        //                 var s = result[i].title.split('Tk');
+        //                 var lin = " https://www.careerjet.com.bd"+result[i].title2;
+
+        //                 locs = s[0];
+        //             }
+        //             else {
+
+        //                 var lin = " https://www.careerjet.com.bd"+result[i].title2;
+        //                 var locs = result[i].title;
+        //             }
+
+        //             // console.log("location by scrap: " + locs);
+        //             // openCages(locs);
+        //             if(!jobLocations.includes(locs)){
+        //             jobLocations.push(locs);
+        //             }
+        //             str += '<li><a href="'+lin+'">' + locs + '</a></li>';
+
+        //         }
+        //         str += '</ul>';
+
+        //         $('body').append(str);
+        //         jobLocations.forEach(element => {
+        //             console.log(element+" scrap");
+        //         });
+
+
+        //     });
+        // });
+
+        //////////**************///////////jobshow
+        var  jobsDist=[];
+        var jobdistcopy=[];
+        var push=0;
+        var jobs = document.querySelector('#jobsBtn');
+        jobs.addEventListener('click', function () {
+            jobsDist = [];
+            jobdistcopy = [];
+            for(var i=0;i<jobLocations.length;i++){
+                var onlyL=jobLocations[i].split('~');
+                openCages(onlyL[0],onlyL[1]);
+                console.log(onlyL[0]+" jobloc");
+            }
+            function openCages(lp,lin) { 
+
+                var apikey = '77e0188773704660b21a52e1f5b43366';
+                // var latitude = '23.0';
+                // var longitude = '90.0';
+                var loc = lp;
+
+                var api_url = 'https://api.opencagedata.com/geocode/v1/json'
+
+                var request_url = api_url
+                    + '?'
+                    + 'key=' + apikey
+                    //+ '&q=' + encodeURIComponent(latitude + ',' + longitude)
+                    + '&q=' + encodeURIComponent(loc)
+                    + '&pretty=1'
+                    + '&no_annotations=1';
+
+                // see full list of required and optional parameters:
+                // https://opencagedata.com/api#forward
+
+                var request = new XMLHttpRequest();
+                request.open('GET', request_url, true);
+
+                request.onload = function () {
+                    // see full list of possible response codes:
+                    // https://opencagedata.com/api#codes
+
+                    if (request.status == 200) {
+                        // Success!
+                        var data = JSON.parse(request.responseText);
+                        // alert(data.results[0].formatted);
+                        ta = data.results[0].geometry.lat;
+                        tb = data.results[0].geometry.lng;
+
+                        
+
+                        var res = Math.sqrt(Math.pow(ta - mya, 2) + Math.pow(tb - myb, 2));
+                        jobsDist.push(res);
+                        jobdistcopy.push(res+"~"+lp+"*"+lin);
+                        // console.log("res: " + lin);
+
+                        
+                        
+                        //console.log(data.results[0].geometry.lat);
+                       // console.log(data.results[0].geometry.lng);
+
+                    } else if (request.status <= 500) {
+                        // We reached our target server, but it returned an error
+
+                        console.log("unable to geocode! Response code: " + request.status);
+                        var data = JSON.parse(request.responseText);
+                        console.log(data.status.message);
+                    } else {
+                        console.log("server error");
+                    }
+                };
+
+                request.onerror = function () {
+                    // There was a connection error of some sort
+                    console.log("unable to connect to server");
+                };
+
+                request.send();  // make the request
+
+
+            }
+
+
+
+
+        });
+
+
+        //////////\\\\\\\\\\\************
+        var jobsort=[];
+        var is;
+        var showJob=document.querySelector('#jobsShowBtn');
+        showJob.addEventListener('click',function(){
+            var str2 = '<ul  style=position: absolute; bottom: 0px>';
+            jobsort = [];
+            jobsort=jobsDist.sort();
+            // console.log("job sort lwngth : "+ jobsort.length);
+            for( is=0;is<jobsort.length;is++){
+                console.log(jobsort[is]+" mmmmmmmmm");
+                for(var j=0;j<jobdistcopy.length;j++){
+                    
+                    if(jobdistcopy[j].includes(jobsort[is]))
+                        {
+                            var locws=jobdistcopy[j].split("~");
+                            var links=jobdistcopy[j].split("*");
+                            var locw = locws[1].split("*");
+
+                            console.log("only links : "+links[1]);
+                            str2 += '<li><a href="'+links[1]+'">' + locw[0] + '</a></li>';
+                            // str += '<li><a href="'+lin+'">' + locs + '</a></li>';
+                            jobdistcopy[j]="0";
+                        }
+                }
+            }
+                str2 += '</ul>';
+                $('.items').append(str2);
+
+        });
+
+
+
+
+        // function showPosition(position) {
+        //     ma=position.coords.latitude;
+        //     mb=position.coords.longitude;
+        //     console.log("Latitude: " + position.coords.latitude +
+        //         "<br>Longitude: " + position.coords.longitude);
+
+        // }
+
+
+
+
+
+
+        //////////////////****************** //////////////////////
+        function openCages(latt, longg) {
+
+            var apikey = '77e0188773704660b21a52e1f5b43366';
+            // var latitude = '23.0';
+            // var longitude = '90.0';
+            // var loc = lp;
+
+            var api_url = 'https://api.opencagedata.com/geocode/v1/json'
+
+            var request_url = api_url
+                + '?'
+                + 'key=' + apikey
+                + '&q=' + encodeURIComponent(latt + ',' + longg)
+                //  + '&q=' + encodeURIComponent(loc)
+                + '&pretty=1'
+                + '&no_annotations=1';
+
+            // see full list of required and optional parameters:
+            // https://opencagedata.com/api#forward
+
+            var request = new XMLHttpRequest();
+            request.open('GET', request_url, true);
+
+            request.onload = function () {
+                // see full list of possible response codes:
+                // https://opencagedata.com/api#codes
+
+                if (request.status == 200) {
+                    // Success!
+                    var data = JSON.parse(request.responseText);
+                    // alert(data.results[0].formatted);
+                    myloc = data.results[0].formatted;
+                    document.querySelector('.locp').innerHTML = "My location: " + myloc;
+
+
+                    // ta = data.results[0].geometry.lat;
+                    //tb = data.results[0].geometry.lng;
+
+                    // var res = Math.sqrt(Math.pow(ta - ma, 2) + Math.pow(tb - mb, 2));
+                    //console.log("res: " + res);
+
+                    // console.log(data.results[0].geometry.lat);
+                    //console.log(data.results[0].geometry.lng);
+
+                } else if (request.status <= 500) {
+                    // We reached our target server, but it returned an error
+
+                    console.log("unable to geocode! Response code: " + request.status);
+                    var data = JSON.parse(request.responseText);
+                    console.log(data.status.message);
+                } else {
+                    console.log("server error");
+                }
+            };
+
+            request.onerror = function () {
+                // There was a connection error of some sort
+                console.log("unable to connect to server");
+            };
+
+            request.send();  // make the request
+
+
+        }
+
+
+
+
+
+
+
+
+    </script>
+
+
+
+</body>
+
+</html>

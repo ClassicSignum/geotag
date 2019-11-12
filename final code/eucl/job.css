@@ -1,0 +1,12 @@
+p,ul{
+    display: inline-block;
+}
+iframe{
+    display: block;
+}
+
+.items{
+    width: 100%;
+    display: grid;
+    grid-template-columns: 50% 50%;
+}
